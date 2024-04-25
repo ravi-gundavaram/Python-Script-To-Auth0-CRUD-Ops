@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth0-manager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth0-manager
+  template:
+    metadata:
+      labels:
+        app: auth0-manager
+    spec:
+      containers:
+      - name: auth0-manager
+        image: auth0-manager-image
+        command: ["python", "auth0_manager.py", "create", "ravikumarawsdevloper2015@gmail.com", "Ravi18@"]
+        env:
+        - name: DOMAIN
+          valueFrom:
+            configMapKeyRef:
+              name: auth0-config
+              key: DOMAIN
+        - name: TOKEN
+          valueFrom:
+            configMapKeyRef:
+              name: auth0-config
+              key: TOKEN
