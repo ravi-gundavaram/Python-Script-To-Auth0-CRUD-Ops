@@ -3,6 +3,9 @@ import sys
 import requests
 import json
 from urllib.parse import quote
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
 
 class Auth0Manager:
     def __init__(self, domain, token):
@@ -60,6 +63,29 @@ class Auth0Manager:
         response = requests.patch(url, headers=self.headers, data=json.dumps(data))
         return response.json()
 
+@app.route('/')
+def home():
+    return "Welcome to Auth0 Manager API! Use the documented endpoints to interact with the API."
+
+# Flask routes for API access
+@app.route('/create_user', methods=['POST'])
+def api_create_user():
+    data = request.json
+    return jsonify(manager.create_user(data['email'], data['password']))
+
+@app.route('/get_user/<user_id>', methods=['GET'])
+def api_get_user(user_id):
+    return jsonify(manager.get_user(user_id))
+
+@app.route('/delete_user/<user_id>', methods=['DELETE'])
+def api_delete_user(user_id):
+    return jsonify(manager.delete_user(user_id))
+
+@app.route('/update_user/<user_id>', methods=['PUT'])
+def api_update_user(user_id):
+    data = request.json
+    return jsonify(manager.update_user(user_id, data.get('email'), data.get('password')))
+
 if __name__ == '__main__':
     domain = os.getenv('AUTH0_DOMAIN')
     token = os.getenv('AUTH0_TOKEN')
@@ -77,3 +103,5 @@ if __name__ == '__main__':
             print(manager.update_user(sys.argv[2], sys.argv[3], sys.argv[4]))
         else:
             print("Invalid arguments")
+    else:
+        app.run(host='0.0.0.0', port=5001)

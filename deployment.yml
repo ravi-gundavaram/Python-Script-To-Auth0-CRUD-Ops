@@ -27,3 +27,5 @@ spec:
             configMapKeyRef:
               name: auth0-config
               key: TOKEN
+        ports:
+        - containerPort: 5001
