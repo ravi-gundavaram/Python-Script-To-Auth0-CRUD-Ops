@@ -33,11 +33,30 @@ class Auth0Manager:
 
     def update_user(self, user_id, email=None, password=None):
         url = f"{self.base_url}/users/{quote(user_id)}"
-        data = {}
-        if email:
-            data['email'] = email
-        if password:
-            data['password'] = password
+        if email and password:
+            print("Updating email and password separately.")
+        # Update email first
+            email_data = {'email': email}
+            response = requests.patch(url, headers=self.headers, data=json.dumps(email_data))
+            if response.status_code == 200:
+                print("Email updated successfully.")
+            # Now update password
+                password_data = {'password': password}
+                response = requests.patch(url, headers=self.headers, data=json.dumps(password_data))
+                if response.status_code == 200:
+                    print("Password updated successfully.")
+                else:
+                    print(f"Failed to update password: {response.json()}")
+            else:
+                print(f"Failed to update email: {response.json()}")
+            return response.json()
+        elif email:
+            data = {'email': email}
+        elif password:
+            data = {'password': password}
+        else:
+            return {"error": "No data provided for update"}
+
         response = requests.patch(url, headers=self.headers, data=json.dumps(data))
         return response.json()
 

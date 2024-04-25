@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
       - name: auth0-manager
-        image: auth0-manager-image
-        command: ["python", "auth0_manager.py", "create", "ravikumarawsdevloper2015@gmail.com", "Ravi18@"]
+        image: auth0_manager:latest
+        command: ["python", "auth0_manager.py", "create", "ravikumargundavarapu@gmail.com", "Ravi18@KUMAR"]
         env:
         - name: DOMAIN
           valueFrom:
