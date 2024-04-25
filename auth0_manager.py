@@ -13,14 +13,10 @@ class Auth0Manager:
         url = f"{self.base_url}/users"
         data = {
             "user_metadata": {},
-            "phone_number": "8247212795",
-            "user_id": "Ravi8247",
-            "username": "Ravikumar",
             "connection": "Username-Password-Authentication",
             "email": email,
             "password": password,
-            "email_verified": False,
-            "phone_verified": False
+            "email_verified": False
         }
         response = requests.post(url, headers=self.headers, data=json.dumps(data))
         return response.json()
