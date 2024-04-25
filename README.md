@@ -12,9 +12,13 @@ Deployed with Docker and Kubernetes.
 ## Setup
 
 1. Install Python dependencies:
-2. Build the Docker image:
-3. Run with Docker:
-4. Deploy with Kubernetes:
+2. Build the Docker image: "docker build -t auth0-manager current_working_direcctory"
+3. Run with Docker: "docker run auth0-manager"
+4. Push to Registry (if required): docker push auth0-manager-image
+5. Deploy to Kubernetes:
+Apply ConfigMap: kubectl apply -f configmap.yaml
+Apply Deployment: kubectl apply -f deployment.yaml
+
 
 ## Usage
 

@@ -12,10 +12,15 @@ class Auth0Manager:
     def create_user(self, email, password):
         url = f"{self.base_url}/users"
         data = {
+            "user_metadata": {},
+            "phone_number": "8247212795",
+            "user_id": "Ravi8247",
+            "username": "Ravikumar",
             "connection": "Username-Password-Authentication",
             "email": email,
             "password": password,
-            "email_verified": False
+            "email_verified": False,
+            "phone_verified": False
         }
         response = requests.post(url, headers=self.headers, data=json.dumps(data))
         return response.json()
@@ -43,7 +48,7 @@ class Auth0Manager:
 if __name__ == '__main__':
     domain = os.getenv('AUTH0_DOMAIN')
     token = os.getenv('AUTH0_TOKEN')
-    
+    print(f"Domain: {domain}, Token: {token}")
     manager = Auth0Manager(domain, token)
     if len(sys.argv) > 1:
         action = sys.argv[1]
