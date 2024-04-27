@@ -3,7 +3,7 @@ import sys
 import requests
 import json
 from urllib.parse import quote
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template_string
 
 app = Flask(__name__)
 
@@ -65,13 +65,27 @@ class Auth0Manager:
 
 @app.route('/')
 def home():
-    return "Welcome to Auth0 Manager API! Use the documented endpoints to interact with the API."
+    html_form = """
+    <h1>Create User</h1>
+    <form action='/create_user' method='post'>
+        <label>Email:</label><input type='email' name='email' required><br>
+        <label>Password:</label><input type='password' name='password' required><br>
+        <input type='submit' value='Create User'>
+    </form>
+    """
+    return render_template_string(html_form)
 
 # Flask routes for API access
 @app.route('/create_user', methods=['POST'])
 def api_create_user():
-    data = request.json
-    return jsonify(manager.create_user(data['email'], data['password']))
+    if request.content_type == 'application/json':
+        data = request.get_json()
+        email = data['email']
+        password = data['password']
+    else:  # Handle form-data
+        email = request.form['email']
+        password = request.form['password']
+    return jsonify(manager.create_user(email, password))
 
 @app.route('/get_user/<user_id>', methods=['GET'])
 def api_get_user(user_id):

@@ -23,4 +23,4 @@ Apply Deployment: kubectl apply -f deployment.yaml
 ## Usage
 
 The script can perform `create_user`, `get_users`, `update_users` and `delete_user` actions.(CRUD)
-
+Access the web interface via the exposed port to create users without using Postman.
